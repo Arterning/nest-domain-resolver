@@ -1,6 +1,7 @@
 import { Controller, Get, HttpCode, Response } from '@nestjs/common';
 import { AppService } from './app.service';
 import {register, collectDefaultMetrics} from 'prom-client'
+import { IpInvalidException } from './error/ip-invalid-error';
 
 
 
@@ -28,6 +29,18 @@ export class AppController {
     const metrics = await register.metrics();
     res.setHeader('Content-Type', register.contentType);
     return res.send(metrics);
+  }
+
+
+  @Get('http-error')
+  error() {
+    throw new IpInvalidException();
+  }
+
+
+  @Get('simple-error')
+  simpleError() {
+    throw new Error('This is an error');
   }
 
 

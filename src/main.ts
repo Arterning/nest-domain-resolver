@@ -1,9 +1,13 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import {register, collectDefaultMetrics} from 'prom-client'
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
 import * as dotenv from 'dotenv';
+import { LogInterceptor } from './log/log.interceptor';
+import { ReportLogger } from './log/report-log';
+import { HttpExceptionFilter } from './filter/http-exception.filter';
+import { AllExceptionsFilter } from './filter/all-exception.filter';
 
 
 async function bootstrap() {
@@ -11,7 +15,15 @@ async function bootstrap() {
   const envFileName = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
   dotenv.config({ path: envFileName });
 
-  const app = await NestFactory.create(AppModule);
+  const reportLogger = new ReportLogger();
+  const app = await NestFactory.create(AppModule, {
+    logger: reportLogger 
+  });
+  app.useGlobalInterceptors(new LogInterceptor(reportLogger));
+  const httpAdapter = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter), new HttpExceptionFilter());
+
+
   collectDefaultMetrics();
 
   const config = new DocumentBuilder()
