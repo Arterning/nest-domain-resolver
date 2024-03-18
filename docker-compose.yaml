@@ -4,6 +4,7 @@ services:
     image: mongo
     container_name: mongodb
     restart: always
+    env_file: .docker.env
     command:
       - --auth
     ports:
@@ -19,6 +20,7 @@ services:
     build: .
     container_name: domain-resolver
     restart: always
+    env_file: .docker.env
     ports:
       - '3000:3000'
     environment:

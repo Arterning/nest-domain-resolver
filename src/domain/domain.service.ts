@@ -29,7 +29,7 @@ export class DomainService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} domain`;
+    return this.domainModel.findByIdAndDelete(id).exec();
   }
 
   /**

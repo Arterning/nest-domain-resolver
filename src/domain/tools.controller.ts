@@ -10,6 +10,12 @@ export class ToolsController {
 
     constructor(private readonly domainService: DomainService) {}
 
+    /**
+     * resolve ONLY the IPv4 addresses for the given domain
+     * @param domain 
+     * @param clientIp 
+     * @returns 
+     */
     @Get('lookup')
     lookup(@Query("domain") domain,  @Headers('x-forwarded-for') clientIp: string) {
         return this.domainService.lookupDomain(domain, clientIp);
@@ -17,7 +23,7 @@ export class ToolsController {
 
 
     /**
-     * validateIPaddress
+     * validate if the input is an IPv4 address
      */
     @Post('validate')
     validate(@Body() validateIpDto: ValidateIpDto) {
