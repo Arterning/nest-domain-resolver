@@ -2,8 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DomainService } from './domain.service';
 import { CreateDomainDto } from './dto/create-domain.dto';
 import { UpdateDomainDto } from './dto/update-domain.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('domain')
+@ApiTags('Domain')
 export class DomainController {
   constructor(private readonly domainService: DomainService) {}
 

@@ -1,9 +1,11 @@
 import { Body, Controller, Get, Headers, Post, Query } from "@nestjs/common";
 import { DomainService } from "./domain.service";
 import { ValidateIpDto } from "./dto/validate-ip.dto";
+import { ApiTags } from "@nestjs/swagger";
 
 
 @Controller('v1/tools')
+@ApiTags('Tools')
 export class ToolsController {
 
     constructor(private readonly domainService: DomainService) {}
