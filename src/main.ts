@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import {register, collectDefaultMetrics} from 'prom-client'
+import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
 
 
 async function bootstrap() {
@@ -16,6 +17,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  setupGracefulShutdown({ app });
 
   await app.listen(3000);
 }
