@@ -11,17 +11,16 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DB}
 
-  dns-lookup-app:
+  domain-resolver:
     build: .
-    container_name: dns-lookup-app
+    container_name: domain-resolver
     restart: always
     ports:
       - '3000:3000'
     environment:
-      NODE_ENV: production
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_URL: 'mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}'
+      MONGO_URL: 'mongodb://mongo:27017/${MONGO_DB}'
     healthcheck:
       test: curl --fail http://localhost:3000/health || exit 1
       interval: 30s
