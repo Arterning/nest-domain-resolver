@@ -3,9 +3,14 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import {register, collectDefaultMetrics} from 'prom-client'
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
+import * as dotenv from 'dotenv';
 
 
 async function bootstrap() {
+
+  const envFileName = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
+  dotenv.config({ path: envFileName });
+
   const app = await NestFactory.create(AppModule);
   collectDefaultMetrics();
 
