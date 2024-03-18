@@ -22,7 +22,7 @@ services:
     ports:
       - '3000:3000'
     environment:
-      MONGO_URL: mongodb://mongo:27017/nest-domain-resolver
+      MONGO_URL: mongodb://admin:admin@mongo:27017/nest-domain-resolver?authSource=admin
       MONGO_DB: nest-domain-resolver
     healthcheck:
       test: curl --fail http://localhost:3000/health || exit 1
