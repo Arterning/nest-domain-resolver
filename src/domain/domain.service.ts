@@ -44,7 +44,7 @@ export class DomainService {
    * retrieve the latest 20 saved queries from the database and display them in order (the most recent should be first).
    */
   async history(): Promise<QueryDto[]> {
-    const result = await this.domainModel.find().sort({ _id: -1 }).limit(20).exec();
+    const result = await this.domainModel.find().sort({ createdAt: -1 }).limit(20).exec();
 
     const list = result.map((record) => {
       return {
