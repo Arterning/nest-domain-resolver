@@ -28,11 +28,11 @@ spec:
             initialDelaySeconds: 1
             successThreshold: 5
           env:
-            - name: DB_URL
+            - name: MONGO_URL
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Values.application.name }}-config
-                  key: DB_URL
+                  key: MONGO_URL
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
