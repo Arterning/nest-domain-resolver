@@ -1,7 +1,6 @@
 import { Controller, Get, HttpCode, Response } from '@nestjs/common';
 import { AppService } from './app.service';
 import {register, collectDefaultMetrics} from 'prom-client'
-import { IpInvalidException } from './error/ip-invalid-error';
 
 
 

@@ -8,9 +8,15 @@ import * as dnsPromises from 'node:dns/promises';
 import { IAddress } from 'src/type/address';
 import { QueryDto } from './dto/query.dto';
 import { ValidateIpResponseDto } from './dto/validate-ip-response.dto';
+import { InvalidDomainException } from 'src/error/invalid-domain-error';
 
 @Injectable()
 export class DomainService {
+
+  private static domainRegex = /^(?!:\/\/)([a-z0-9-]+\.)*[a-z0-9-]+\.[a-z]{2,}$/i;
+
+  private static ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
   constructor(@InjectModel('Domain') private domainModel: Model<Domain>) {}
 
   create(createDomainDto: CreateDomainDto): Promise<Domain> {
@@ -54,6 +60,11 @@ export class DomainService {
   }
 
   async lookupDomain(domain: string, clientIp: string): Promise<QueryDto> {
+    //validate whether the domain is valid
+    if (!DomainService.domainRegex.test(domain)) {
+      throw new InvalidDomainException();
+    }
+
     const addresses = await dnsPromises.resolve4(domain);
     const domainRecord = new this.domainModel({
       domain,
@@ -70,11 +81,7 @@ export class DomainService {
   }
 
   async validateIp(ip: string) {
-    if (
-      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
-        ip,
-      )
-    ) {
+    if (DomainService.ipRegex.test(ip)) {
       return {
         status: true,
       } as ValidateIpResponseDto;
