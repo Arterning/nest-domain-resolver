@@ -1,0 +1,6 @@
+application:
+  hellok8s:
+    message: "It works with Helm Values values-dev.yaml!"
+    database:
+      url: "mongodb://localhost:27017/nest-domain-resolver"
+      password: "admin"

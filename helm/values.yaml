@@ -1,0 +1,9 @@
+application:
+  name: hellok8s
+  hellok8s:
+    image: arterning/nest-domain-resolver:v1
+    replicas: 3
+    message: "It works with Helm Values[v2]!"
+    database:
+      url: "mongodb://localhost:27017/nest-domain-resolver"
+      password: "admin"
