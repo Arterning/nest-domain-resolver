@@ -27,8 +27,8 @@ async function bootstrap() {
   collectDefaultMetrics();
 
   const config = new DocumentBuilder()
-    .setTitle('Domain Resolver example')
-    .setDescription('Domain Resolver API description')
+    .setTitle('Interview challenge')
+    .setDescription('Implementation for the interview challenge')
     .setVersion('1.0')
     .addTag('Domain Resolver')
     .build();

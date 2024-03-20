@@ -7,4 +7,7 @@ export class CreateDomainDto {
 
     
     clientIp: string;
+
+
+    addresses?: string[];
 }

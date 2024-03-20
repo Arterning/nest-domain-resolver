@@ -1,3 +1,3 @@
-export interface IAddress{
+export interface IAddress {
     ip: string
 }

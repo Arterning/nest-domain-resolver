@@ -8,7 +8,7 @@ import { HistoryController } from './history.controller';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'Domain', schema: DomainSchema }])],
-  controllers: [DomainController, ToolsController, HistoryController],
+  controllers: [ToolsController, HistoryController],
   providers: [DomainService],
 })
 export class DomainModule {}

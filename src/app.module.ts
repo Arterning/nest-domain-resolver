@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ConsoleLogger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -9,7 +9,11 @@ import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 @Module({
   imports: [
     GracefulShutdownModule.forRoot({
-      cleanup: () => console.log('cleanup'),
+      cleanup: () => {
+        const consoleLogger = new ConsoleLogger();
+        consoleLogger.setContext('GracefulShutdown');
+        consoleLogger.log('Gracefully shutting down the server...');
+      },
       gracefulShutdownTimeout: 5000,
       keepNodeProcessAlive: true,
     }),

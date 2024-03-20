@@ -6,6 +6,8 @@ import { UpdateDomainDto } from './dto/update-domain.dto';
 import { Domain } from './entities/domain.entity';
 import * as dnsPromises from 'node:dns/promises';
 import { IAddress } from 'src/type/address';
+import { QueryDto } from './dto/query.dto';
+import { ValidateIpResponseDto } from './dto/validate-ip-response.dto';
 
 @Injectable()
 export class DomainService {
@@ -35,20 +37,36 @@ export class DomainService {
   /**
    * retrieve the latest 20 saved queries from the database and display them in order (the most recent should be first).
    */
-  history() {
-    return this.domainModel.find().sort({ _id: -1 }).limit(20).exec();
+  async history(): Promise<QueryDto[]> {
+    const result = await this.domainModel.find().sort({ _id: -1 }).limit(20).exec();
+
+    const list = result.map((record) => {
+      return {
+        addresses: record.addresses?.map((address) => ({ ip: address })) as IAddress[],
+        client_ip: record.clientIp,
+        created_at: record.createdAt.getTime(),
+        domain: record.domain,
+      } as QueryDto;
+    });
+
+    return list;
+
   }
 
-  async lookupDomain(domain: string, clientIp: string) {
-    const address = await dnsPromises.resolve4(domain);
-    const addresses = address.map((ip) => ({ ip }) as IAddress);
+  async lookupDomain(domain: string, clientIp: string): Promise<QueryDto> {
+    const addresses = await dnsPromises.resolve4(domain);
     const domainRecord = new this.domainModel({
       domain,
       clientIp,
       addresses,
     });
-    await domainRecord.save();
-    return addresses;
+    const result = await domainRecord.save();
+    return {
+      addresses: result.addresses?.map((address) => ({ ip: address })) as IAddress[],
+      client_ip: result.clientIp,
+      created_at: result.createdAt.getTime(),
+      domain: result.domain,
+    };
   }
 
   async validateIp(ip: string) {
@@ -57,8 +75,12 @@ export class DomainService {
         ip,
       )
     ) {
-      return true;
+      return {
+        status: true,
+      } as ValidateIpResponseDto;
     }
-    return false;
+    return {
+      status: false,
+    } as ValidateIpResponseDto;
   }
 }

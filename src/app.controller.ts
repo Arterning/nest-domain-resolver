@@ -32,16 +32,16 @@ export class AppController {
   }
 
 
-  @Get('http-error')
-  error() {
-    throw new IpInvalidException();
-  }
+  // @Get('http-error')
+  // error() {
+  //   throw new IpInvalidException();
+  // }
 
 
-  @Get('simple-error')
-  simpleError() {
-    throw new Error('This is an error');
-  }
+  // @Get('simple-error')
+  // simpleError() {
+  //   throw new Error('This is an error');
+  // }
 
 
 }
