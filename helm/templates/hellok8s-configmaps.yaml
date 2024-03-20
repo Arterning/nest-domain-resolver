@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.application.name }}-config
 data:
-  DB_URL: {{ .Values.application.hellok8s.database.url }}
+  MONGO_URL: {{ .Values.application.hellok8s.database.url }}

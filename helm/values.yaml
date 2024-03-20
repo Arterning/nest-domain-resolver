@@ -2,7 +2,7 @@ application:
   name: hellok8s
   hellok8s:
     image: arterning/nest-domain-resolver:v1
-    replicas: 3
+    replicas: 2
     message: "It works with Helm Values[v2]!"
     database:
       url: "mongodb://192.168.1.128:27017/nest-domain-resolver"
