@@ -3,7 +3,8 @@ kind: Service
 metadata:
   name: service-hellok8s-clusterip
 spec:
-  type: ClusterIP
+  # type: ClusterIP
+  type: NodePort
   selector:
     app: hellok8s
   ports:
